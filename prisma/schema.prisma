@@ -1,0 +1,86 @@
+// VibeCheck Prisma schema
+// PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  projects     Project[]
+
+  @@index([email])
+}
+
+model Project {
+  id               String   @id @default(cuid())
+  userId           String
+  title            String
+  intendedVibe     String
+  targetAudience   String?
+  platformContext  String?
+  captionContext   String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaAssets      MediaAsset[]
+  analysisResults  AnalysisResult[]
+
+  @@index([userId])
+  @@index([userId, createdAt])
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  AUDIO
+}
+
+model MediaAsset {
+  id         String    @id @default(cuid())
+  projectId  String
+  type       MediaType
+  fileName   String
+  mimeType   String
+  filePath   String    // path / key returned by the storage provider
+  fileUrl    String    // URL the browser can fetch
+  sizeBytes  Int       @default(0)
+  createdAt  DateTime  @default(now())
+
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([projectId, type])
+}
+
+model AnalysisResult {
+  id                      String   @id @default(cuid())
+  projectId               String
+  score                   Int
+  verdict                 String
+  intendedVibe            String
+  perceivedVibe           String
+  insightBullets          Json
+  personaReactions        Json
+  improvementSuggestions  Json
+  trendSuggestions        Json
+  rawModelResponse        Json?
+  createdAt               DateTime @default(now())
+
+  project                 Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([projectId, createdAt])
+}
