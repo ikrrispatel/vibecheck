@@ -10,3 +10,8 @@ uploads/
 .vercel
 next-env.d.ts
 .turbo
+
+# local build artifacts
+tsconfig.tsbuildinfo
+vibecheck/
+.env.save
