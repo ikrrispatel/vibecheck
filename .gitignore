@@ -10,3 +10,7 @@ uploads/
 .vercel
 next-env.d.ts
 .turbo
+
+.env
+.env.*
+!.env.example
