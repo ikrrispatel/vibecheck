@@ -11,7 +11,13 @@ uploads/
 next-env.d.ts
 .turbo
 
+<<<<<<< HEAD
 # local build artifacts
 tsconfig.tsbuildinfo
 vibecheck/
 .env.save
+=======
+.env
+.env.*
+!.env.example
+>>>>>>> origin/main
