@@ -131,17 +131,22 @@ export default async function ProjectDetailPage({
               </h2>
             </div>
             {primaryImage ? (
-              <div className="bg-bg-elevated">
+              <div className="bg-bg-elevated/20">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={primaryImage.fileUrl}
                   alt={project.title}
-                  className="w-full h-auto max-h-[420px] object-contain"
+                  className="w-full h-auto max-h-[500px] object-contain shadow-2xl"
                 />
               </div>
             ) : (
-              <div className="p-8 text-center text-text-tertiary text-sm">
-                No image attached
+              <div className="flex flex-col items-center justify-center p-16 bg-bg-elevated/10">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-bg-raised border border-border-subtle text-text-muted mb-4">
+                  <ImageIcon className="h-6 w-6" />
+                </div>
+                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-tertiary font-bold">
+                  No visual attached
+                </p>
               </div>
             )}
 
