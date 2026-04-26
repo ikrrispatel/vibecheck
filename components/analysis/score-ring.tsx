@@ -4,10 +4,10 @@ interface ScoreRingProps {
 }
 
 function bandColor(score: number) {
-  if (score >= 80) return "#34d399"; // success
-  if (score >= 60) return "#a3e635"; // accent
-  if (score >= 40) return "#fbbf24"; // warn
-  return "#f87171"; // danger
+  if (score >= 80) return "#059669"; // success
+  if (score >= 60) return "#7c6f5a"; // accent
+  if (score >= 40) return "#d97706"; // warn
+  return "#dc2626"; // danger
 }
 
 function bandLabel(score: number) {
@@ -33,7 +33,7 @@ export function ScoreRing({ score, size = 160 }: ScoreRingProps) {
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#26262d"
+            stroke="#e2dfd6"
             strokeWidth={stroke}
             fill="none"
           />

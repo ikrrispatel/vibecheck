@@ -22,10 +22,10 @@ export function AppNav({ userName, userEmail }: AppNavProps) {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border-subtle bg-bg-base/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-border-subtle bg-bg-base/80 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/dashboard" className="flex items-center gap-2 focus-ring rounded-md">
+          <Link href="/" className="flex items-center gap-2 focus-ring rounded-md">
             <Logo />
             <span className="text-base font-semibold tracking-tight">VibeCheck</span>
           </Link>

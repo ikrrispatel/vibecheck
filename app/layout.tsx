@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { GalaxyBackground } from "@/components/landing/galaxy-background";
 
 export const metadata: Metadata = {
   title: "VibeCheck — Test your creative intent before you publish",
@@ -27,12 +28,24 @@ export default function RootLayout({
     // overlay throws a hydration mismatch on every page load for users with
     // those extensions installed. This only suppresses the warning for the
     // root element itself — child components still hydrate strictly.
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className="min-h-screen bg-bg-base text-text-primary"
+        className="min-h-screen text-text-primary"
         suppressHydrationWarning
       >
-        {children}
+        {/* Full-screen galaxy background — fixed, behind all content */}
+        <div
+          aria-hidden
+          className="fixed inset-0 pointer-events-none"
+          style={{ zIndex: 0 }}
+        >
+          <GalaxyBackground />
+        </div>
+
+        {/* Page content sits above the galaxy */}
+        <div className="relative" style={{ zIndex: 1 }}>
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -11,7 +12,7 @@ import { Logo } from "@/components/nav/marketing-nav";
 import { loginSchema } from "@/lib/validations/auth";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
@@ -52,6 +53,60 @@ export default function LoginPage() {
   }
 
   return (
+    <form
+      onSubmit={onSubmit}
+      className="rounded-xl border border-border-default bg-bg-raised p-6 space-y-4"
+    >
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@studio.com"
+        />
+      </div>
+      <div>
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="••••••••"
+        />
+      </div>
+
+      {error && (
+        <div
+          role="alert"
+          className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger"
+        >
+          {error}
+        </div>
+      )}
+
+      <Button type="submit" className="w-full" disabled={submitting}>
+        {submitting ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Signing in…
+          </>
+        ) : (
+          "Log in"
+        )}
+      </Button>
+    </form>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className="min-h-screen flex flex-col">
       <div className="container-page py-6">
         <Link
@@ -75,55 +130,9 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form
-            onSubmit={onSubmit}
-            className="rounded-xl border border-border-default bg-bg-raised p-6 space-y-4"
-          >
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@studio.com"
-              />
-            </div>
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-              />
-            </div>
-
-            {error && (
-              <div
-                role="alert"
-                className="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger"
-              >
-                {error}
-              </div>
-            )}
-
-            <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Signing in…
-                </>
-              ) : (
-                "Log in"
-              )}
-            </Button>
-          </form>
+          <Suspense fallback={<div>Loading...</div>}>
+            <LoginForm />
+          </Suspense>
 
           <p className="mt-6 text-center text-sm text-text-secondary">
             New to VibeCheck?{" "}
