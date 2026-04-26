@@ -12,12 +12,12 @@ export function Hero() {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-[400px] bg-[radial-gradient(ellipse_60%_60%_at_50%_0%,rgba(163,230,53,0.08),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(ellipse_60%_60%_at_50%_0%,rgba(136,117,212,0.09),transparent_70%)]"
       />
 
       <div className="container-page relative pt-20 md:pt-28 pb-20 md:pb-28">
         <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border-default bg-bg-raised/60 px-3 py-1 text-xs text-text-secondary">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border-default bg-bg-raised/60 backdrop-blur-sm px-3 py-1 text-xs text-text-secondary">
             <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse-soft" />
             Synthetic audience feedback for creators
           </div>
@@ -49,7 +49,7 @@ export function Hero() {
 
         {/* Visual stage */}
         <div className="relative mx-auto mt-20 max-w-5xl">
-          <div className="rounded-2xl border border-border-default bg-bg-raised overflow-hidden shadow-[0_0_60px_-20px_rgba(163,230,53,0.15)]">
+          <div className="rounded-2xl border border-border-default bg-bg-raised/80 backdrop-blur-sm overflow-hidden shadow-[0_0_80px_-20px_rgba(136,117,212,0.18)]">
             <div className="flex items-center gap-1.5 border-b border-border-subtle px-4 py-3">
               <span className="h-2.5 w-2.5 rounded-full bg-bg-elevated border border-border-default" />
               <span className="h-2.5 w-2.5 rounded-full bg-bg-elevated border border-border-default" />

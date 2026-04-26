@@ -6,10 +6,10 @@ export function CTA() {
   return (
     <section className="py-24 md:py-32 border-b border-border-subtle/60">
       <div className="container-page">
-        <div className="relative overflow-hidden rounded-2xl border border-border-default bg-bg-raised p-10 md:p-16 text-center">
+        <div className="relative overflow-hidden rounded-2xl border border-border-default bg-bg-raised/80 backdrop-blur-sm p-10 md:p-16 text-center shadow-[0_0_80px_-20px_rgba(136,117,212,0.15)]">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(163,230,53,0.08),transparent_70%)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(136,117,212,0.08),transparent_70%)]"
           />
           <div className="relative">
             <h2 className="text-display font-semibold tracking-tight text-balance">

@@ -15,7 +15,7 @@ export default async function AppLayout({
 
   return (
     <AuthSessionProvider>
-      <div className="min-h-screen bg-bg-base">
+      <div className="min-h-screen">
         <AppNav
           userName={session.user.name ?? "Creator"}
           userEmail={session.user.email ?? ""}

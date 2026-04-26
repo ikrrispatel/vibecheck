@@ -4,7 +4,7 @@ import {
   VIBECHECK_SYSTEM_PROMPT,
   buildUserPrompt,
 } from "./prompts";
-import { vibeAnalysisSchema, type VibeAnalysis } from "@/lib/validations/analysis";
+import { vibeAnalysisSchema, type VibeAnalysis, PERSONA_NAMES, type PersonaName } from "@/lib/validations/analysis";
 import { getFallbackAnalysis } from "./fallback";
 
 export class AnalysisError extends Error {
@@ -101,7 +101,7 @@ export async function runProjectAnalysis(
   let parsedJson: unknown;
   try {
     parsedJson = JSON.parse(cleaned);
-  } catch (err) {
+  } catch {
     console.error("[analysis] Model returned non-JSON:", cleaned.slice(0, 500));
     const fallback = getFallbackAnalysis(project.intendedVibe);
     const created = await prisma.analysisResult.create({
@@ -121,18 +121,37 @@ export async function runProjectAnalysis(
     return { analysisId: created.id, analysis: fallback };
   }
 
-  const rawData = parsedJson as any;
+  const rawData = parsedJson as Record<string, unknown>;
+  
+  // Build persona reactions mapping
+  let personaReactions: Array<{ persona: PersonaName; reaction: string }> = [];
+  if (Array.isArray(rawData.personas)) {
+    const personas = rawData.personas as Array<{ name?: string; reaction?: string }>;
+    const validPersonas = new Set(PERSONA_NAMES as unknown as string[]);
+    personaReactions = personas
+      .filter((p) => p.name && p.reaction && validPersonas.has(p.name))
+      .map((p) => ({ persona: p.name as PersonaName, reaction: p.reaction as string }));
+  }
+  
+  // Ensure all required personas are present with default reactions
+  for (const persona of PERSONA_NAMES) {
+    if (!personaReactions.find((pr) => pr.persona === persona)) {
+      personaReactions.push({ persona, reaction: "No reaction available" });
+    }
+  }
+  
+  // Ensure exactly 6 personas
+  personaReactions = personaReactions.slice(0, 6);
+
   const mapped: VibeAnalysis = {
-    score: rawData.alignment_score || 0,
-    verdict: rawData.verdict || "No verdict provided",
+    score: (rawData.alignment_score as number) || 0,
+    verdict: (rawData.verdict as string) || "No verdict provided",
     intendedVibe: project.intendedVibe,
-    perceivedVibe: rawData.verdict?.slice(0, 50) || project.intendedVibe,
-    insightBullets: Array.isArray(rawData.perception_summary) ? rawData.perception_summary.slice(0, 3) : ["Insight 1", "Insight 2", "Insight 3"],
-    personaReactions: Array.isArray(rawData.personas) 
-      ? rawData.personas.map((p: any) => ({ persona: p.name, reaction: p.reaction })) 
-      : [],
-    improvementSuggestions: Array.isArray(rawData.suggested_changes) ? rawData.suggested_changes.slice(0, 3) : ["Imp 1", "Imp 2", "Imp 3"],
-    trendSuggestions: Array.isArray(rawData.suggested_changes) ? rawData.suggested_changes.slice(0, 3) : ["Trend 1", "Trend 2", "Trend 3"]
+    perceivedVibe: ((rawData.verdict as string)?.slice(0, 50)) || project.intendedVibe,
+    insightBullets: Array.isArray(rawData.perception_summary) ? (rawData.perception_summary as string[]).slice(0, 3) : ["Insight 1", "Insight 2", "Insight 3"],
+    personaReactions,
+    improvementSuggestions: Array.isArray(rawData.suggested_changes) ? (rawData.suggested_changes as string[]).slice(0, 3) : ["Imp 1", "Imp 2", "Imp 3"],
+    trendSuggestions: Array.isArray(rawData.suggested_changes) ? (rawData.suggested_changes as string[]).slice(0, 3) : ["Trend 1", "Trend 2", "Trend 3"]
   };
 
   const validated = vibeAnalysisSchema.safeParse(mapped);

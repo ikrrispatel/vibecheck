@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export function MarketingNav() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border-subtle/50 bg-bg-base/70 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-border-subtle/50 bg-bg-base/80 backdrop-blur-md">
       <div className="container-page flex h-16 items-center justify-between">
         <Link
           href="/"
@@ -42,7 +42,7 @@ export function Logo({ className = "" }: { className?: string }) {
     <div
       className={`relative flex h-7 w-7 items-center justify-center rounded-md bg-bg-elevated border border-border-default ${className}`}
     >
-      <div className="h-2 w-2 rounded-full bg-accent shadow-[0_0_12px_rgba(163,230,53,0.6)]" />
+      <div className="h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_rgba(136,117,212,0.6)]" />
     </div>
   );
 }
